@@ -25,10 +25,10 @@
 	</div>
 	<?php endif ?>
 	<div class="block-content">
-		<div class="products-grid grid">
+		<div class="bestsellers-grid grid">
 			<ol class="product-items widget-product-grid">
 				<?php foreach($bestsellers as $bestseller) { $productUrl = $bestseller->getProductUrl(); $productName = $block->escapeHtml($bestseller->getName()); ?>
-					<li class="bestseller-item">
+					<li class="product-item">
 						<div class="bestseller-item-info">
 							<a href="<?php echo $productUrl; ?>" class="product-item-photo"><?php echo $block->getImage($bestseller, $imageId)->toHtml(); ?></a>
 							<div class="product-item-details">
