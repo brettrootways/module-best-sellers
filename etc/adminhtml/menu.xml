@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @package ZShapeTech_BestSellers
+ * @author ZShapeTech <zshapetech@gmail.com>
+ * @license http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version $Id$
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+		<add id="ZShapeTech_BestSellers::bestsellers" title="Best Sellers" module="ZShapeTech_BestSellers" sortOrder="1" parent="ZShapeTech_Core::core" resource="ZShapeTech_BestSellers::bestsellers"/>
+		<add id="ZShapeTech_BestSellers::settings" title="Settings" module="ZShapeTech_BestSellers" sortOrder="0" parent="ZShapeTech_BestSellers::bestsellers" action="adminhtml/system_config/edit/section/zshape_bestsellers" resource="ZShapeTech_BestSellers::bestsellers"/>
+	</menu>
+</config>

@@ -1,0 +1,97 @@
+<?php 
+/**
+ * @package ZShapeTech_BestSellers
+ * @author ZShapeTech <zshapetech@gmail.com>
+ * @license http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version $Id$
+ */
+?>
+<?php
+	$bestsellers = $block->getBestSellers();
+	if(count($bestsellers)) {
+		$imageId = 'category_page_grid';
+		$title = $block->getBestSellersParam('title');
+		$carousel = $block->getBestSellersParam('carousel');
+		$productsToShow = $block->getBestSellersParam('products_to_show');
+		$autoplay = $block->getBestSellersParam('autoplay');
+		$autoplaySpeed = $autoplay ? $block->getBestSellersParam('autoplay_speed') : 0 ;
+		$wishlistLink = $block->getWishlistEnable();
+		$compareLink = $block->getCompareEnable();
+?>
+<div class="block widget block-products-list grid zshape-bestsellers">
+	<?php if ($title): ?>
+	<div class="block-title">
+		<strong><?= $block->escapeHtml(__($title)) ?></strong>
+	</div>
+	<?php endif ?>
+	<div class="block-content">
+		<div class="products-grid grid">
+			<ol class="product-items widget-product-grid">
+				<?php foreach($bestsellers as $bestseller) { $productUrl = $bestseller->getProductUrl(); $productName = $block->escapeHtml($bestseller->getName()); ?>
+					<li class="bestseller-item">
+						<div class="bestseller-item-info">
+							<a href="<?php echo $productUrl; ?>" class="product-item-photo"><?php echo $block->getImage($bestseller, $imageId)->toHtml(); ?></a>
+							<div class="product-item-details">
+								<strong class="product-item-name">
+									<a href="<?php echo $productUrl; ?>" title="<?php echo $productName; ?>" class="product-item-link"><?php echo $productName; ?></a>
+								</strong>
+								<div class="price-box"><?php echo $bestseller->getFormatedPrice(); ?></div>
+								<?php echo $block->getReviewsSummaryHtml($bestseller); ?>
+								<div class="product-item-actions">
+									<div class="actions-primary">
+										<?php if ($bestseller->isSaleable()) { ?>
+											<?php if ($bestseller->getTypeInstance()->hasRequiredOptions($bestseller)): ?>
+												<button class="action tocart primary" data-mage-init='{"redirectUrl":{"url":"<?= $block->escapeUrl($block->getAddToCartUrl($bestseller)) ?>"}}' type="button" title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
+													<span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+												</button>
+											<?php else: ?>
+												<?php
+													$postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
+													$postData = $postDataHelper->getPostData($block->getAddToCartUrl($bestseller), ['product' => $bestseller->getEntityId()])
+												?>
+												<button class="action tocart primary" data-post='<?= /* @noEscape */ $postData ?>' type="button" title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
+													<span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+												</button>
+											<?php endif; ?>
+										<?php } else { ?>
+											<div class="stock unavailable"><span><?= $block->escapeHtml(__('Out of stock')) ?></span></div>
+										<?php } ?>
+									</div>
+									<?php if ($wishlistLink || $compareLink): ?>
+										<div class="actions-secondary" data-role="add-to-links">
+											<?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow() && $wishlistLink): ?>
+												<a href="#"
+												   data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($bestseller) ?>' class="action towishlist" data-action="add-to-wishlist" title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>">
+													<span><?= $block->escapeHtml(__('Add to Wish List')) ?></span>
+												</a>
+											<?php endif; ?>
+											<?php if ($block->getAddToCompareUrl() && $compareLink): ?>
+												<?php $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');?>
+												<a href="#" class="action tocompare" data-post='<?= /* @noEscape */ $compareHelper->getPostDataParams($bestseller) ?>' title="<?= $block->escapeHtmlAttr(__('Add to Compare')) ?>">
+													<span><?= $block->escapeHtml(__('Add to Compare')) ?></span>
+												</a>
+											<?php endif; ?>
+										</div>
+									<?php endif; ?>
+								</div>
+							</div>
+						</div>
+					</li>
+				<?php } ?>
+			</ol>
+		</div>
+	</div>
+</div>
+<?php if($carousel) { ?>
+	<script>
+	require(['jquery', 'slick'], function($) {
+		$('.zshape-bestsellers .product-items').slick({
+			slidesToShow: <?php echo $productsToShow; ?>,
+			autoplay: <?php if($autoplay) { ?>true<?php } else { ?>false<?php } ?>,
+			autoplaySpeed: <?php echo $autoplaySpeed; ?>
+		}); 
+	});
+	</script>
+<?php } ?>
+ <?php } ?>
+

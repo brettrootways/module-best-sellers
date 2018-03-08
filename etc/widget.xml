@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @package ZShapeTech_BestSellers
+ * @author ZShapeTech <zshapetech@gmail.com>
+ * @license http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version $Id$
+ */
+-->
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="zshape_bestsellers" class="ZShapeTech\BestSellers\Block\Widget\BestSellers">
+        <label translate="true">Best Seller Products</label>
+        <description translate="true">Create widget of best sellers products in your store</description>
+        <parameters>
+			<parameter name="title" xsi:type="text" visible="true">
+                <label translate="true">Title</label>
+                <value>Best Sellers</value>
+            </parameter>
+            <parameter name="carousel" xsi:type="select" visible="true" source_model="Magento\Config\Model\Config\Source\Yesno">
+				<label translate="true">Display best sellers products in sliding carousel</label>
+			</parameter>
+			<parameter name="products_to_show" xsi:type="text" visible="true">
+				<label translate="true">Number of products to show</label>
+				<depends>
+					<parameter name="carousel" value="1" />
+				</depends>
+				<value>5</value>
+			</parameter>
+			<parameter name="autoplay" xsi:type="select" visible="true" source_model="Magento\Config\Model\Config\Source\Yesno">
+				<label translate="true">Autoplay</label>
+				<depends>
+					<parameter name="carousel" value="1" />
+				</depends>
+			</parameter>
+			<parameter name="autoplay_speed" xsi:type="text" visible="true">
+				<label translate="true">Autoplay speed (ms)</label>
+				<depends>
+					<parameter name="autoplay" value="1" />
+				</depends>
+				<value>3000</value>
+			</parameter>
+        </parameters>
+    </widget>
+</widgets>
